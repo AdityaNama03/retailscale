@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: retailscale_dev
+    schema: bronze
+    tables:
+      - name: orders
+      - name: customers
+      - name: products
+      - name: sellers
+      - name: order_items
+      - name: payments
+      - name: reviews
+      - name: geolocation
+      - name: category_translation
