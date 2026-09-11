@@ -1,6 +1,7 @@
 with orders as (
 
-    select * from {{ ref('stg_orders') }}
+    select *, date(order_purchase_at) as order_purchase_date, date(order_delivered_customer_at) as order_delivered_date
+ from {{ ref('stg_orders') }}
 
 ),
 
@@ -34,6 +35,8 @@ joined as (
         o.order_delivered_carrier_at,
         o.order_delivered_customer_at,
         o.order_estimated_delivery_at,
+        o.order_purchase_date,
+        o.order_delivered_date,
 
         c.customer_unique_id,
         c.customer_city,
