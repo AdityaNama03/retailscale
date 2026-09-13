@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
-
 from airflow import DAG
-from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
+from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
 
 default_args = {
     "owner": "retailscale",
@@ -10,35 +9,34 @@ default_args = {
     "retry_delay": timedelta(minutes=5),
 }
 
+COPY_INTO_SQL = """
+COPY INTO bronze.orders
+FROM @retailscale_stage/olist/orders/
+FILE_FORMAT = (FORMAT_NAME = 'retailscale_csv_format')
+ON_ERROR = 'CONTINUE';
+"""
+# Repeat/extend this pattern per bronze table (orders, customers, order_items,
+# products, sellers, payments, reviews, geolocation) — either as one task per
+# table, or a single task running multiple COPY INTO statements sequentially.
+
 with DAG(
     dag_id="retailscale_daily_pipeline",
     default_args=default_args,
-    description="S3 upload -> Snowflake bronze load -> dbt run -> dbt test",
     schedule_interval="@daily",
-    start_date=datetime(2026, 9, 1),
+    start_date=datetime(2024, 1, 1),
     catchup=False,
     tags=["retailscale"],
 ) as dag:
 
-    def run_upload_to_s3():
-        import subprocess
-        result = subprocess.run(
-            ["python", "/opt/airflow/scripts/upload_to_s3.py"],
-            capture_output=True, text=True,
-        )
-        print(result.stdout)
-        if result.returncode != 0:
-            raise Exception(f"S3 upload failed: {result.stderr}")
-
-    upload_to_s3 = PythonOperator(
+    upload_to_s3 = BashOperator(
         task_id="upload_to_s3",
-        python_callable=run_upload_to_s3,
+        bash_command="python /opt/airflow/scripts/upload_to_s3.py",
     )
 
-    # Placeholder for now — real COPY INTO call goes here once wired to Snowflake connector
-    snowflake_copy_into = BashOperator(
+    snowflake_copy_into = SnowflakeOperator(
         task_id="snowflake_copy_into",
-        bash_command='echo "TODO: run COPY INTO via Snowflake operator/hook"',
+        snowflake_conn_id="snowflake_retail",
+        sql=COPY_INTO_SQL,
     )
 
     dbt_run = BashOperator(
