@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ─── Base ─────────────────────────────────── */
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif !important;
+    background-color: #0E1117;
+    color: #FAFAFA;
+}
+
+/* Give the main content area generous breathing room */
+.main .block-container {
+    padding-top: 2rem !important;
+    padding-bottom: 4rem !important;
+    padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
+    max-width: 1400px;
+}
+
+/* ─── Sidebar ───────────────────────────────── */
+[data-testid="stSidebar"] {
+    background-color: #0E1117 !important;
+    border-right: 1px solid #2D3340;
+}
+[data-testid="stSidebar"] .block-container {
+    padding-top: 1.5rem !important;
+}
+
+/* ─── KPI Cards ─────────────────────────────── */
+.kpi-card {
+    background: linear-gradient(135deg, #1B1F2A 0%, #1e2334 100%);
+    border: 1px solid #2D3340;
+    border-top: 3px solid #58A6FF;
+    border-radius: 12px;
+    padding: 24px 20px 20px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-height: 110px;
+}
+.kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(88, 166, 255, 0.12);
+}
+
+/* ─── Plotly charts — ensure they're tall enough ─ */
+[data-testid="stPlotlyChart"] {
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+/* ─── Subheaders spacing ─────────────────────── */
+h2, h3 {
+    margin-top: 2rem !important;
+    margin-bottom: 0.75rem !important;
+    color: #FAFAFA !important;
+    font-weight: 600 !important;
+}
+
+/* ─── Horizontal rule ────────────────────────── */
+hr {
+    border-color: #2D3340 !important;
+    margin: 2rem 0 !important;
+}
+
+/* ─── Columns gap ────────────────────────────── */
+[data-testid="stHorizontalBlock"] {
+    gap: 1.25rem;
+    align-items: stretch;
+}
+
+/* ─── Dataframe / tables ─────────────────────── */
+[data-testid="stDataFrame"] {
+    border: 1px solid #2D3340;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* ─── Badges ─────────────────────────────────── */
+.badge-green  { background: rgba(63,185,80,.15);  color: #3FB950; padding: 3px 10px; border-radius: 12px; font-size: .83em; font-weight: 600; }
+.badge-red    { background: rgba(248,81,73,.15);  color: #F85149; padding: 3px 10px; border-radius: 12px; font-size: .83em; font-weight: 600; }
+.badge-amber  { background: rgba(210,153,34,.15); color: #D29922; padding: 3px 10px; border-radius: 12px; font-size: .83em; font-weight: 600; }
+
+/* ─── Scrollbar ──────────────────────────────── */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track  { background: #0E1117; }
+::-webkit-scrollbar-thumb  { background: #2D3340; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #4B5563; }
+
+/* ─── Multiselect / inputs dark ─────────────── */
+div[data-baseweb="select"] > div { background-color: #1B1F2A !important; border-color: #2D3340 !important; }
+div[data-baseweb="select"] * { color: #FAFAFA !important; }
+
+/* ─── Metrics ────────────────────────────────── */
+[data-testid="stMetricValue"]  { font-size: 2.2rem !important; font-weight: 700 !important; color: #FAFAFA !important; }
+[data-testid="stMetricLabel"]  { font-size: .75rem !important; text-transform: uppercase; letter-spacing: .05em; color: #8B949E !important; }
+[data-testid="stMetricDelta"]  { font-size: .9rem !important; }
